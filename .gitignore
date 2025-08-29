@@ -1,0 +1,9 @@
+**/Debug/**
+**/*.settings
+/RemoteSystemsTempFiles/
+**/.metadata
+**/stm32lib
+**/*.odt
+**/*.doc
+**/*.docx
+**/*.zip
