@@ -1,5 +1,5 @@
 //------------------------------------
-// Lab 3 - Part 1: UART - Lab03_uart.c
+// Lab 3 - Part 1: UART - Lab3_Task1.c
 //------------------------------------
 //
 
@@ -11,7 +11,6 @@ uint8_t echo = 1;
 char uart_getchar2(UART_HandleTypeDef *huart){
 	char input[1];
 	HAL_StatusTypeDef status = HAL_UART_Receive(huart, (uint8_t *)input, 1, 1);
-//	printf("sigma");
 	if(status == HAL_OK){
 		if(input[0] >= 32 && input[0] <=126){
 			return (char)input[0];

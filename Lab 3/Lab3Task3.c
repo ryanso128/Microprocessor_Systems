@@ -1,18 +1,12 @@
 //----------------------------------
-// Lab 3 - Part 3: SPI - Lab03_spi.c
+// Lab 3 - Part 3: SPI - Lab3_Task3.c
 //----------------------------------
 //
 
 #include "init.h"
 
-// If needed:
-//#include <stdio.h>
-//#include <stdlib.h>
 SPI_HandleTypeDef hspi2;
-/*
- * For convenience, configure the SPI handler here
- */
-// See 769 Description of HAL drivers.pdf, Ch. 58.1 or stm32f7xx_hal_spi.c
+
 void configureSPI();
 
 int main(void)
