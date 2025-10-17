@@ -11,9 +11,9 @@ void configureSPI();
 
 int main(void)
 {
-	Sys_Init();
+	Sys_Init(); 
 	configureSPI();
-
+	printf("\033[2J\033[H");
 	 printf("SPI2 Loopback Test\r\n");
 	 uint8_t tx, rx;
 	 while (1) {
