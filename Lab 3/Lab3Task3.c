@@ -12,18 +12,21 @@ void configureSPI();
 int main(void)
 {
 	Sys_Init();
-	printf("\033[2J\033[H");
-
-	// For convenience
 	configureSPI();
 
-	uint8_t tx, rx;
-	while (1) {
-		// Get a byte from terminal (USB_UART)
-		tx = uart_getchar(&USB_UART, 1);
-		// Send and receive simultaneously
-		HAL_SPI_TransmitReceive(&hspi2, &tx, &rx, 1, 10);
-	}
+	 printf("SPI2 Loopback Test\r\n");
+	 uint8_t tx, rx;
+	 while (1) {
+	        // Get a byte from terminal (USB_UART)
+	        tx = uart_getchar(&USB_UART, 1);
+
+	        // Send and receive simultaneously
+	        if (HAL_SPI_TransmitReceive(&hspi2, &tx, &rx, 1, 10) == HAL_OK) {
+	            printf("SPI RX: %c (0x%02X)\r\n", rx, rx);
+	        } else {
+	            printf("SPI Error\r\n");
+	        }
+	  }
 }
 
 void configureSPI()
