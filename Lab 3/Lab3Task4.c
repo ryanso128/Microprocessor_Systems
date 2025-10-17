@@ -109,7 +109,6 @@ void spi_transfer(uint8_t *tx1, uint8_t *tx2, uint8_t *rx1, uint8_t *rx2)
 	curr_tx[0] = *tx1;
 	curr_tx[1] = *tx2;
 
-
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);   // CS low
 	HAL_SPI_TransmitReceive(&hspi2, curr_tx, curr_rx, 2, 10);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);     // CS high
@@ -122,8 +121,8 @@ void spi_transfer(uint8_t *tx1, uint8_t *tx2, uint8_t *rx1, uint8_t *rx2)
 void spi_commander(char *cmd) {
 	uint8_t tx[2] = {0};
 	uint8_t rx[2] = {0};
-	if (*cmd == 'r')    // Read firmware version
-	{
+
+	if (*cmd == 'r') {
 		tx[0] = 0b01000000;
 		tx[1] = 0;
 		spi_transfer(&tx[0],&tx[1], &rx[0],&rx[1]);
@@ -131,23 +130,17 @@ void spi_commander(char *cmd) {
 		uint8_t ver_major = version >> 4;
 		uint8_t ver_minor = version & 0x0F;
 		printf("STaTS Firmware v%d.%d\r\n", ver_major, ver_minor);
-	}
-	else if (*cmd == 't')   // Read temperature
-	{
-
+	} else if (*cmd == 't') {
 		tx[0] = 0b10000000;
 		tx[1] = reverse(0x02);
 		spi_transfer(&tx[0],&tx[1], &rx[0],&rx[1]);
-		// To do
+
 		// Lo register
 		tx[0] = 0b00100000;
 		tx[1] = 0;
 		spi_transfer(&tx[0],&tx[1], &rx[0],&rx[1]);
-
-
 		uint8_t temp_lo = reverse(rx[1]);
 
-		//uint8_t temp_lo = (rx[0] << 4) + rx[1];
 		// Hi register
 		tx[0] = 0b00101000;
 		tx[1] = 0;
@@ -156,9 +149,7 @@ void spi_commander(char *cmd) {
 		double total_temp = 357.6 - (0.187 * (double)raw_temp);
 		printf("raw_temp: %d\r\n", raw_temp);
 		printf("Temperature: %lf\r\n", total_temp);
-	}
-	else if (*cmd == 'l')
-	{
+	} else if (*cmd == 'l') {
 		//Check do you want to read DEVID or change DEVID
 		char input;
 		printf("Would you like to read or change DEVID\r\n a: Write, b: Read\r\n");
@@ -203,14 +194,7 @@ void spi_commander(char *cmd) {
 			input = uart_getchar(&USB_UART, 0);
 		}
 		spi_commander(&input);
-	} else if (*cmd == '-'){
-		tx[0] = 0b00110000;
-		tx[1] = 0;
-		spi_transfer(&tx[0],&tx[1], &rx[0],&rx[1]);
-
-		if(reverse(rx[1]!=0)) printf("Peripheral to Controller: %c\r\n",reverse(rx[1]));
-
-	} else {
+	}  else {
 		tx[0] = 0b10110000;
 		tx[1] = reverse((uint8_t)*cmd);
 		spi_transfer(&tx[0],&tx[1], &rx[0],&rx[1]);
