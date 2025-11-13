@@ -33,10 +33,6 @@ void HAL_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma)
 
 void DMA_Init_MemToMem(void)
 {
-    /* Enable DMA2 Clock */
-    __HAL_RCC_DMA2_CLK_ENABLE();
-
-    /* Configure DMA Stream */
     hdma_memtomem.Instance = DMA2_Stream0;
     hdma_memtomem.Init.Channel = DMA_CHANNEL_0;
     hdma_memtomem.Init.Direction = DMA_MEMORY_TO_MEMORY;
@@ -48,10 +44,8 @@ void DMA_Init_MemToMem(void)
     hdma_memtomem.Init.Priority = DMA_PRIORITY_HIGH;
     hdma_memtomem.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
 
-    /* Initialize DMA */
     HAL_DMA_Init(&hdma_memtomem);
 
-    /* Enable DMA Interrupt */
     HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
 }
